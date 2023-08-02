@@ -1,57 +1,44 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import css from './ImageGallery.module.css';
 import ImageGalleryItems from './ImageGalleryItem';
 import Modal from './Modal';
 
-class ImageGallery extends Component {
-  state = {
-    modalIsOpen: false,
-    modalUrl: '',
-  };
+function ImageGallery({ items }) {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalUrl, setModalUrl] = useState('');
 
-  onModalOpen = e => {
-    if (e.target.nodeName === 'IMG' && !this.state.modalIsOpen) {
-      this.setState(() => ({
-        modalIsOpen: true,
-        modalUrl: e.target.attributes.lsrc.value,
-      }));
+  const onModalOpen = e => {
+    if (e.target.nodeName === 'IMG' && !modalIsOpen) {
+      setModalIsOpen(true);
+      setModalUrl(e.target.attributes.lsrc.value);
       document.body.style.overflow = 'hidden';
     }
   };
-  onModalClose = () => {
-    this.setState(() => ({
-      modalIsOpen: false,
-      modalUrl: '',
-    }));
+  const onModalClose = () => {
+    setModalIsOpen(false);
+    setModalUrl('');
   };
 
-  render() {
-    return (
-      <>
-        <ul className={css.gallery}>
-          {this.props.items.map(item => {
-            return (
-              <ImageGalleryItems
-                key={item.id}
-                info={item}
-                onModalOpen={this.onModalOpen}
-              />
-            );
-          })}
-        </ul>
-        {this.state.modalIsOpen && (
-          <Modal onModalClose={this.onModalClose}>
-            <img
-              src={this.state.modalUrl}
-              alt=""
-              className={css.modalImg}
-              loading="lazy"
+  return (
+    <>
+      <ul className={css.gallery}>
+        {items.map(item => {
+          return (
+            <ImageGalleryItems
+              key={item.id}
+              info={item}
+              onModalOpen={onModalOpen}
             />
-          </Modal>
-        )}
-      </>
-    );
-  }
+          );
+        })}
+      </ul>
+      {modalIsOpen && (
+        <Modal onModalClose={onModalClose}>
+          <img src={modalUrl} alt="" className={css.modalImg} loading="lazy" />
+        </Modal>
+      )}
+    </>
+  );
 }
 
 export default ImageGallery;

@@ -1,71 +1,69 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import Searchbar from './Searchbar';
 import ImageGallery from './ImageGallery';
 import API from './GetApi/GetApi';
 import Button from './Button';
 import Loader from './Loader';
 
-class App extends Component {
-  state = {
-    textSearch: '',
-    page: 1,
-    items: [],
-    loading: false,
-    showMore: false,
-  };
+function App() {
+  const [textSearch, setTextSearch] = useState('');
+  const [page, setPage] = useState(1);
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [showMore, setShowMore] = useState(false);
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.state.textSearch !== prevState.textSearch) {
-      this.setState({ page: 1, items: [] });
-      this.findByApi();
-    }
-    if (this.state.page !== prevState.page) {
-      this.findByApi();
-    }
-  }
+  useEffect(() => {
+    findByApi();
+  }, [textSearch, page]);
 
-  findByApi = () => {
-    this.setState({ loading: true, showMore: false });
-    API.getApi(this.state.textSearch, this.state.page).then(findImages => {
-      this.setState({
-        items: [...this.state.items, ...findImages.data.hits],
+  const findByApi = () => {
+    if (textSearch.trim()) {
+      setLoading(true);
+      setShowMore(false);
+      API.getApi(textSearch, page).then(findImages => {
+        setItems([...items, ...findImages.data.hits]);
+
+        if (
+          items.length >= findImages.data.totalHits ||
+          findImages.data.hits.length === 0
+        ) {
+          setShowMore(false);
+        } else {
+          setShowMore(true);
+        }
+
+        setLoading(false);
       });
-      if (
-        this.state.items.length >= findImages.data.totalHits ||
-        findImages.data.hits.length === 0
-      ) {
-        this.setState({ showMore: false });
-      } else {
-        this.setState({ showMore: true });
-      }
-
-      this.setState({ loading: false });
-    });
+    } else {
+      setShowMore(false);
+    }
   };
 
-  onSearch = textSearch => {
-    this.setState(() => ({ page: 1, textSearch: textSearch }));
+  const onSearch = search => {
+    setPage(1);
+    setItems([]);
+    setTextSearch(search);
   };
 
-  onShowMore = () => {
-    this.setState({ page: this.state.page + 1 });
+  const onShowMore = () => {
+    setPage(page + 1);
   };
 
-  render() {
-    return (
-      <>
-        <div className="container">
-          <Searchbar onSearch={this.onSearch} />
-        </div>
-        <div className="main-container">
-          {this.state.textSearch && <ImageGallery items={this.state.items} />}
-
-          {this.state.loading && <Loader />}
-          {this.state.showMore && <Button onShowMore={this.onShowMore} />}
-        </div>
-      </>
-    );
-  }
+  return (
+    <>
+      <div className="container">
+        <Searchbar onSearch={onSearch} />
+      </div>
+      <div className="main-container">
+        {!textSearch.trim() && (
+          <h3 className="noSearch">Enter data to search...</h3>
+        )}
+        {textSearch && <ImageGallery items={items} />}
+        {loading && <Loader />}
+        {showMore && <Button onShowMore={onShowMore} />}
+      </div>
+    </>
+  );
 }
 
 export default App;
