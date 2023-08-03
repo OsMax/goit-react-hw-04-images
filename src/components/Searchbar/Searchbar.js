@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import css from './Searchbar.module.css';
 
 function Searchbar({ onSearch }) {
