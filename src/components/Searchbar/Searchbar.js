@@ -11,7 +11,7 @@ function Searchbar({ onSearch }) {
     <header className={css.searchbar}>
       <a href="index.html">
         <img
-          src="./images/logo-661013_1280.webp"
+          src={require('./images/logo-661013_1280.webp')}
           alt="pixabay"
           className={css.headerImg}
         />
