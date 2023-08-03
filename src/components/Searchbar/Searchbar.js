@@ -11,7 +11,7 @@ function Searchbar({ onSearch }) {
     <header className={css.searchbar}>
       <a href="index.html">
         <img
-          src="%PUBLIC_URL%/logo-661013_1280.webp"
+          src="./logo-661013_1280.webp"
           alt="pixabay"
           className={css.headerImg}
         />
