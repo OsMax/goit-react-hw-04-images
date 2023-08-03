@@ -13,4 +13,5 @@ function rebuildFilter(filter) {
   return filter.split(' ').join('+');
 }
 
-export default getApi;
+// eslint-disable-next-line import/no-anonymous-default-export
+export default { getApi };

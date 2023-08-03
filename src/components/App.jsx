@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react';
 import Searchbar from './Searchbar';
 import ImageGallery from './ImageGallery';
@@ -16,7 +17,7 @@ function App() {
     findByApi();
   }, [textSearch, page]);
 
-  const findByApi = () => {
+  function findByApi() {
     if (textSearch.trim()) {
       setLoading(true);
       setShowMore(false);
@@ -37,9 +38,12 @@ function App() {
     } else {
       setShowMore(false);
     }
-  };
+  }
 
   const onSearch = search => {
+    if (textSearch === search) {
+      return;
+    }
     setPage(1);
     setItems([]);
     setTextSearch(search);
