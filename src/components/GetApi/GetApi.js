@@ -13,4 +13,4 @@ function rebuildFilter(filter) {
   return filter.split(' ').join('+');
 }
 
-export default { getApi };
+export default getApi;
