@@ -27,13 +27,10 @@ function App() {
         if (findImages.data.hits.length === 0) {
           Notiflix.Notify.info('There are no results');
         }
-        if (
-          items.length >= findImages.data.totalHits ||
-          findImages.data.hits.length === 0
-        ) {
-          setShowMore(false);
-        } else {
+        if (page < Math.ceil(findImages.data.totalHits / 12)) {
           setShowMore(true);
+        } else {
+          setShowMore(false);
         }
 
         setLoading(false);
