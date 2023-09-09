@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import css from './ImageGallery.module.css';
 import ImageGalleryItems from './ImageGalleryItem';
 import Modal from './Modal';
@@ -40,5 +41,9 @@ function ImageGallery({ items }) {
     </>
   );
 }
+
+ImageGallery.propTypes = {
+  items: PropTypes.array.isRequired,
+};
 
 export default ImageGallery;

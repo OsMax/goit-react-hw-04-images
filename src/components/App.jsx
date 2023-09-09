@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react';
+import Notiflix from 'notiflix';
 import Searchbar from './Searchbar';
 import ImageGallery from './ImageGallery';
 import API from './GetApi/GetApi';
@@ -23,7 +24,9 @@ function App() {
       setShowMore(false);
       API.getApi(textSearch, page).then(findImages => {
         setItems([...items, ...findImages.data.hits]);
-
+        if (findImages.data.hits.length === 0) {
+          Notiflix.Notify.info('There are no results');
+        }
         if (
           items.length >= findImages.data.totalHits ||
           findImages.data.hits.length === 0

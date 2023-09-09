@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import css from './Searchbar.module.css';
 
 function Searchbar({ onSearch }) {
@@ -32,5 +33,7 @@ function Searchbar({ onSearch }) {
     </header>
   );
 }
+
+Searchbar.propTypes = { onSearch: PropTypes.func.isRequired };
 
 export default Searchbar;
