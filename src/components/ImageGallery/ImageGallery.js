@@ -18,6 +18,7 @@ function ImageGallery({ items }) {
   const onModalClose = () => {
     setModalIsOpen(false);
     setModalUrl('');
+    document.body.style.overflow = 'scroll';
   };
 
   return (
